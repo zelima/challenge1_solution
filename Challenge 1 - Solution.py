@@ -30,7 +30,7 @@ def ParseDate(date_string):
     start_date = '-'.join([year_start, month_start, day_start])
     end_date = '-'.join([year_end, month_end, day_end])
         
-    return (start_date, end_date, month_start, '-'.join([month_start, day_start]))
+    return (start_date, end_date)
 
 def ProgressMeter(current, total):
     #visualize progress of parsing data
@@ -65,25 +65,25 @@ for row, record in df.iterrows():
     
     # Find start date and end date of the current record    
     date = record[0] 
-    start_date = ParseDate(date)[0]
-    end_date = ParseDate(date)[1]
+    start_date, end_date = ParseDate(date)
     
     # Find the date range of the current record
     all_dates = pd.date_range(start_date, end_date)
     
     # Unpack current record
     for offset in range(0, 5):
-        df_result = df_result.append({'Date':all_dates[offset].date(),
-                                      'Day': all_dates[offset].day,
-                                     'Month':all_dates[offset].month, 
-                                     'Year':all_dates[offset].year, 
+        date_portion = all_dates[offset]
+        df_result = df_result.append({'Date': date_portion.date(),
+                                      'Day': date_portion.day,
+                                     'Month': date_portion.month, 
+                                     'Year': date_portion.year, 
                                      'Price':record[offset + 1]}, 
                                      ignore_index=True)
 print(': Done!')
 print('Saving file', filename)
 print('-' * 25)
-print(df_result.head())
-print(df_result.tail())
+#print(df_result.head())
+#print(df_result.tail())
 df_result['Price'] = df_result['Price'].astype('float')
 df_result[['Date', 'Price']].to_csv(filename, index = False)
 
@@ -92,11 +92,11 @@ filename = 'HH_Nat_Gas_Price_Monthly.csv'
 print('Saving file', filename)
 print('-' * 25)
 df_result.dropna().drop_duplicates(subset=['Month', 'Year'])[['Date', 'Price']].to_csv(filename, index = False)
-print(df_result.dropna().drop_duplicates(subset=['Month', 'Year'])[['Date', 'Price']].head(13))
+#print(df_result.dropna().drop_duplicates(subset=['Month', 'Year'])[['Date', 'Price']].head(13))
 
 # Save additional CSV with filters applied on dataset
 filename = 'HH_Nat_Gas_Price_Annual.csv'
 print('Saving file', filename)
 print('-' * 25)
 df_result.dropna().drop_duplicates(subset=['Year'])[['Date', 'Price']].to_csv(filename, index = False)
-print(df_result.dropna().drop_duplicates(subset=['Year'])[['Date', 'Price']].head(22))
+#print(df_result.dropna().drop_duplicates(subset=['Year'])[['Date', 'Price']].head(22))
