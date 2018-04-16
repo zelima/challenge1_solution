@@ -14,7 +14,6 @@ def ParseDate(date_string):
     day_end = integers[2] # '10'
     month_start = words[0] # 'Jan'
     month_end = words[1] # 'Jan'
-
     
     # Translating month string to number
     month_dict = {'Jan':1, 'Feb':2, 'Mar':3, 'Apr':4, 'May':5, 'Jun':6,
@@ -28,8 +27,7 @@ def ParseDate(date_string):
         year_end = str(int(year_end) + 1)
         
     start_date = '-'.join([year_start, month_start, day_start])
-    end_date = '-'.join([year_end, month_end, day_end])
-        
+    end_date = '-'.join([year_end, month_end, day_end])        
     return (start_date, end_date)
 
 def ProgressMeter(current, total):
@@ -39,7 +37,7 @@ def ProgressMeter(current, total):
     if int(percentage) == (percentage):
         print('#', end = '')
 
-
+# Main
 # Get data
 target_url = 'https://www.eia.gov/dnav/ng/hist/rngwhhdD.htm'
 df = pd.read_html(target_url)[5]
@@ -52,11 +50,11 @@ df.dropna(thresh=2, inplace=True)
 df.drop(0, inplace=True)
 #print(df.head(10))
 
-
 # Create DataFrame to hold the parsed data
 df_result = pd.DataFrame(columns = ['Date', 'Month', 'Year', 'Price'])
 filename = 'HH_Nat_Gas_Price_Daily.csv'
 
+# Parse the data
 total_count = len(df[0])
 print('Records to parse:', total_count)
 print('Progress: ', end = '')
