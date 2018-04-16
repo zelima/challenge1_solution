@@ -4,8 +4,8 @@ import re
 
 
 def ParseDate(date_string):
-    #passed format - '1997 Jan- 6 to Jan-10'
-    #goal format - '2009-05-30'
+    # passed format - '1997 Jan- 6 to Jan-10'
+    # goal format - '2009-05-30'
     integers = re.findall('(\d+)', date_string) #['1997', '6', '10']
     words = re.findall('\s(\S+)-', date_string) #['Jan', 'Jan']
     year_start = integers[0] # '1997'
@@ -33,7 +33,7 @@ def ParseDate(date_string):
     return (start_date, end_date)
 
 def ProgressMeter(current, total):
-    #visualize progress of parsing data
+    # Visualize progress of parsing process
     ten_percent = int(total / 10)
     percentage = current / ten_percent
     if int(percentage) == (percentage):
